@@ -15,7 +15,7 @@ const PORT = process.env.DEV == 'true' ? 4000 : process.env.PORT;
 console.log(`[${red('INFO')}] Env variables loaded!`);
 
 database.connect('mongodb://45.140.165.115:27017', {
-	user: process.env.MONGO_PW,
+	user: process.env.MONGO_DB,
 	pass: process.env.MONGO_PW,
 	useCreateIndex: false,
 	useUnifiedTopology: true,
