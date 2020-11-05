@@ -3,7 +3,7 @@ import { Player as PlayerInterface } from './interfaces/player.interface';
 
 function load(mongodb: typeof mongoose): unknown {
 
-	const Player = mongodb.model<PlayerInterface>('player', new mongodb.Schema({
+	const Player = mongodb.model<PlayerInterface>('players', new mongodb.Schema({
 		'UUID': {
 			'type': String,
 			'required': true,
@@ -25,6 +25,11 @@ function load(mongodb: typeof mongoose): unknown {
 			'type': [String],
 			'required': true
 		}
+	}, {
+		'_id': false,
+		versionKey: false,
+		timestamps: true,
+		collection: 'members'
 	}));
 
 	return {

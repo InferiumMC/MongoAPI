@@ -7,6 +7,7 @@ interface App {
   UUIDs: Array<string>,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Models: any,
+  Collection: mongoose.Collection;
   // eslint-disable-next-line semi
 }
 

@@ -13,18 +13,20 @@ import { saveData } from './saveToDatabase';
 
 // ! SETUP
 config();
-const PORT = process.env.DEV == 'true' ? 4000 : process.env.PORT;
+const PORT = process.env.DEV == 'true' ? 4001 : process.env.PORT;
 console.log(`[${red('INFO')}] Env variables loaded!`);
 
 mongoose.connect('mongodb://45.140.165.115:27017', {
 	user: process.env.MONGO_DB,
 	pass: process.env.MONGO_PW,
-	useCreateIndex: false,
+	dbName: 'Inferium',
+	useCreateIndex: true,
 	useUnifiedTopology: true,
 	useNewUrlParser: true,
 });
 mongoose.connection.once('open', (): void => {
 	console.log(`[${red('INFO')}] Connected to database on ip: ${blue(networkInterfaces().wlp3s0[1].address)}:27017`);
+	_.Collection = mongoose.connection.collection('members');
 });
 
 
@@ -41,18 +43,17 @@ app.use((request: express.Request, response: express.Response, next: express.Nex
 const _: App = {
 	API: app,
 	database: mongoose,
-	UUIDs: ['1'],
+	UUIDs: [],
 	Models: {},
+	Collection: null,
 };
 
 _.Models = load(_.database);
 
 loadRoutes(_);
 
-saveData(_);
-
 console.log(`[${red('INFO')}] Created express server on ip: ${blue(networkInterfaces().wlp3s0[1].address)}:${PORT}`);
 
-setInterval(() => { return 'stop yelling at me smh'; }, 1000*10);
+setInterval(() => { saveData(_); }, 1000*600);
 
-createServer(app).listen(4001);
+createServer(app).listen(PORT);
